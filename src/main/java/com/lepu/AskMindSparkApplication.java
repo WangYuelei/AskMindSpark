@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 public class AskMindSparkApplication implements CommandLineRunner {
 
 	// API基础地址
-	private static final String API_BASE_URL = "https://aiapi.lepumedical.com";
+	private static final String API_BASE_URL = "";
 
 	// 配置文件路径（Windows桌面）
 	private static final String CONFIG_FILE_PATH = "C:\\Users\\%s\\Desktop\\chatbot_config.txt";
