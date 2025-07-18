@@ -2,6 +2,7 @@ package com.lepu;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,9 +19,9 @@ import java.util.regex.Pattern;
 
 @SpringBootApplication
 public class AskMindSparkApplication implements CommandLineRunner {
-
 	// API基础地址
-	private static final String API_BASE_URL = "";
+	@Value("${api.base-url}")
+	private String apiBaseUrl;
 
 	// 配置文件路径（Windows桌面）
 	private static final String CONFIG_FILE_PATH = "C:\\Users\\%s\\Desktop\\chatbot_config.txt";
@@ -284,11 +285,6 @@ public class AskMindSparkApplication implements CommandLineRunner {
 				}
 			}
 
-			// 验证必填配置
-			if (!StringUtils.hasText(QUESTION_FILE_PATH) || !StringUtils.hasText(API_KEY)) {
-				throw new IllegalStateException("配置文件缺少必要参数：QUESTION_FILE_PATH 或 API_KEY");
-			}
-
 			// 确保MAX不小于MIN
 			if (MAX_WAIT_TIME < MIN_WAIT_TIME) {
 				long temp = MIN_WAIT_TIME;
@@ -351,7 +347,7 @@ public class AskMindSparkApplication implements CommandLineRunner {
 	 */
 	private void printConfiguration() {
 		System.out.println("\n--- 配置信息 ---");
-		System.out.printf("API地址: %s%n", API_BASE_URL);
+		System.out.printf("API地址: %s%n", apiBaseUrl);
 		System.out.printf("问题文件: %s%n", QUESTION_FILE_PATH);
 		System.out.printf("API密钥: %s%n", API_KEY.startsWith("sk-") ? API_KEY.substring(0, 6) + "***" : "***");
 		System.out.printf("问题间最小等待时间: %d 秒 (%d 毫秒)%n",
@@ -397,7 +393,7 @@ public class AskMindSparkApplication implements CommandLineRunner {
 		System.out.println("正在创建会话...");
 
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create(API_BASE_URL + "/api/startChat"))
+				.uri(URI.create(apiBaseUrl + "/api/startChat"))
 				.header("Authorization", "Bearer " + API_KEY)
 				.GET()
 				.build();
@@ -437,7 +433,7 @@ public class AskMindSparkApplication implements CommandLineRunner {
 				question.replace("\"", "\\\""), sessionId);
 
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create(API_BASE_URL + "/flux/chat"))
+				.uri(URI.create(apiBaseUrl + "/flux/chat"))
 				.header("Content-Type", "application/json")
 				.header("Authorization", "Bearer " + API_KEY)
 				.POST(HttpRequest.BodyPublishers.ofString(requestBody))
