@@ -1,0 +1,14 @@
+# AskMindSpark 客户端配置文件
+# 问题文件路径（每行一个问题）
+QUESTION_FILE_PATH=C:\Users\wyl\Desktop\q.txt
+# MindSpark API密钥
+AUTH_TOKEN=eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoyNzE0LCJ1c2VyX25hbWUiOiIxMzEwNjUyMDEzNyIsInVzZXJfa2V5IjoiNGI0NzgwNDgtNjE2Yy00ODQ5LTlmZjYtYWJlZDJhZjM4NzdkIn0.AcYb3D-Ao82WKCqCp6m6mhnIoPERsEWAS79b3IIAu4VnO2WZ9FDO3B1o35IY4-RnVWL_lNCu7gdQ2BQzHv1h1g
+# 问题间最小等待时间（秒），默认10秒
+MIN_WAIT_TIME=5
+# 问题间最大等待时间（秒），默认20秒
+MAX_WAIT_TIME=10
+# 批次间最小等待时间（秒），默认10秒
+MIN_BATCH_WAIT_TIME=5
+# 批次间最大等待时间（秒），默认20秒
+MAX_BATCH_WAIT_TIME=10
+API_BASE_URL=https://aiapi.lepumedical.com

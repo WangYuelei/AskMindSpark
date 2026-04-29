@@ -33,3 +33,5 @@ build/
 .vscode/
 /src/test/
 /.mvn/
+!/mvnw
+!/mvnw.cmd
