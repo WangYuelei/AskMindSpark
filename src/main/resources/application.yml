@@ -1,0 +1,9 @@
+api:
+    base-url: ''
+chatbot:
+    api-base-url: https://aiapi.lepumedical.com
+    auth-token: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoyNzE0LCJ1c2VyX25hbWUiOiIxMzEwNjUyMDEzNyIsInVzZXJfa2V5IjoiMzM4M2Q0MzctNDM3My00MTZmLWI4OGYtOTJmYzFmOGMxNGIxIn0.d687lLmawOfu-tfJ_0KyUeBGiVrVUitcBIQegeFAqkeuD5qKNfIiJckVwI4w2Snt5SEZRYSO6FRbaALUqWbR2A
+    question-file-path: C:\Users\wyl\Desktop\q.txt
+spring:
+    application:
+        name: askMindSpark

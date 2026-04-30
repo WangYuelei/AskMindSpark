@@ -15,9 +15,9 @@ import java.util.concurrent.TimeUnit;
 public class ChatBotClient {
 
     private static String sessionId = null;
-    private static final String API_BASE_URL = "https://aiapi.lepumedical.com";
-    private static final String AUTH_TOKEN = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoyNzE0LCJ1c2VyX25hbWUiOiIxMzEwNjUyMDEzNyIsInVzZXJfa2V5IjoiMzM4M2Q0MzctNDM3My00MTZmLWI4OGYtOTJmYzFmOGMxNGIxIn0.d687lLmawOfu-tfJ_0KyUeBGiVrVUitcBIQegeFAqkeuD5qKNfIiJckVwI4w2Snt5SEZRYSO6FRbaALUqWbR2A";
-    private static final String QUESTION_FILE_PATH = "C:\\Users\\wyl\\Desktop\\q.txt";
+    private static String API_BASE_URL;
+    private static String AUTH_TOKEN;
+    private static String QUESTION_FILE_PATH;
     private static final Random random = new Random();
 
     private static final int QUESTIONS_PER_SESSION = 5;
@@ -31,8 +31,25 @@ public class ChatBotClient {
 
     private static int totalQuestions = 0;
 
+    @SuppressWarnings("unchecked")
+    private static void loadConfiguration() throws IOException {
+        try (InputStream is = ChatBotClient.class.getClassLoader().getResourceAsStream("application.yml")) {
+            if (is == null) throw new IOException("找不到 application.yml");
+            Map<String, Object> yaml = new org.yaml.snakeyaml.Yaml().load(is);
+            Map<String, Object> chatbot = (Map<String, Object>) yaml.get("chatbot");
+            if (chatbot == null) throw new IOException("application.yml 缺少 chatbot 配置节");
+            API_BASE_URL = (String) chatbot.get("api-base-url");
+            AUTH_TOKEN = (String) chatbot.get("auth-token");
+            QUESTION_FILE_PATH = (String) chatbot.get("question-file-path");
+        }
+        if (API_BASE_URL == null || AUTH_TOKEN == null || QUESTION_FILE_PATH == null) {
+            throw new IOException("application.yml 缺少必要项: chatbot.api-base-url, chatbot.auth-token, chatbot.question-file-path");
+        }
+    }
+
     public static void main(String[] args) {
         try {
+            loadConfiguration();
             List<String> questions = readQuestionsFromFile(QUESTION_FILE_PATH);
             totalQuestions = questions.size();
             System.out.printf("成功从文件读取 %d 个问题%n", totalQuestions);
@@ -82,7 +99,7 @@ public class ChatBotClient {
                         return true;
                     }
                 }
-                System.err.println("响应中未找到有效的会话ID");
+                System.err.println("响应中未找到有效的会话ID，实际响应: " + response.body());
                 return false;
             } catch (Exception e) {
                 System.err.printf("解析JSON响应失败: %s%n", e.getMessage());
